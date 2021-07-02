@@ -45,7 +45,7 @@ open class WSTagsField: UIScrollView {
     /// Background color for tag view in normal (selected) state.
     @IBInspectable open var selectedColor: UIColor? {
         didSet {
-            tagViews.forEach { $0.selectedColor = self.selectedColor }
+            tagViews.forEach { $0.selectedColor = .white }
         }
     }
 
@@ -56,15 +56,15 @@ open class WSTagsField: UIScrollView {
         }
     }
 
-    @IBInspectable open var delimiter: String = "" {
+    @IBInspectable open var delimiter: NSAttributedString = NSAttributedString() {
         didSet {
-            tagViews.forEach { $0.displayDelimiter = self.isDelimiterVisible ? self.delimiter : "" }
+            tagViews.forEach { $0.displayDelimiter = self.isDelimiterVisible ? self.delimiter : NSAttributedString() }
         }
     }
 
     @IBInspectable open var isDelimiterVisible: Bool = false {
         didSet {
-            tagViews.forEach { $0.displayDelimiter = self.isDelimiterVisible ? self.delimiter : "" }
+            tagViews.forEach { $0.displayDelimiter = self.isDelimiterVisible ? self.delimiter : NSAttributedString() }
         }
     }
     
@@ -73,7 +73,7 @@ open class WSTagsField: UIScrollView {
 
     @IBInspectable open var maxHeight: CGFloat = CGFloat.infinity {
         didSet {
-            tagViews.forEach { $0.displayDelimiter = self.isDelimiterVisible ? self.delimiter : "" }
+            tagViews.forEach { $0.displayDelimiter = self.isDelimiterVisible ? self.delimiter : NSAttributedString() }
         }
     }
 
@@ -364,7 +364,7 @@ open class WSTagsField: UIScrollView {
     }
 
     // MARK: - Adding / Removing Tags
-    open func addTags(_ tags: [String]) {
+    open func addTags(_ tags: [NSAttributedString]) {
         tags.forEach { addTag($0) }
     }
 
@@ -372,7 +372,7 @@ open class WSTagsField: UIScrollView {
         tags.forEach { addTag($0) }
     }
 
-    open func addTag(_ tag: String) {
+    open func addTag(_ tag: NSAttributedString) {
         addTag(WSTag(tag))
     }
 
@@ -388,14 +388,14 @@ open class WSTagsField: UIScrollView {
 
         let tagView = WSTagView(tag: tag)
         tagView.font = self.font
-        tagView.tintColor = self.tintColor
-        tagView.textColor = self.textColor
+        tagView.tintColor = .white
+        tagView.textColor = .black
         tagView.selectedColor = self.selectedColor
         tagView.selectedTextColor = self.selectedTextColor
-        tagView.displayDelimiter = self.isDelimiterVisible ? self.delimiter : ""
+        tagView.displayDelimiter = self.isDelimiterVisible ? self.delimiter : NSAttributedString()
         tagView.cornerRadius = self.cornerRadius
-        tagView.borderWidth = self.borderWidth
-        tagView.borderColor = self.borderColor
+        tagView.borderWidth = 1
+        tagView.borderColor = .lightGray
         tagView.keyboardAppearance = self.keyboardAppearance
         tagView.layoutMargins = self.layoutMargins
 
@@ -406,6 +406,7 @@ open class WSTagsField: UIScrollView {
         tagView.onDidRequestDelete = { [weak self] tagView, replacementText in
             // First, refocus the text field
             self?.textField.becomeFirstResponder()
+            
             if (replacementText?.isEmpty ?? false) == false {
                 self?.textField.text = replacementText
             }
@@ -437,7 +438,7 @@ open class WSTagsField: UIScrollView {
         repositionViews()
     }
 
-    open func removeTag(_ tag: String) {
+    open func removeTag(_ tag: NSAttributedString) {
         removeTag(WSTag(tag))
     }
 
@@ -470,7 +471,8 @@ open class WSTagsField: UIScrollView {
     open func tokenizeTextFieldText() -> WSTag? {
         let text = self.textField.text?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
         if text.isEmpty == false && (onVerifyTag?(self, text) ?? true) {
-            let tag = WSTag(text)
+            let attributed = NSAttributedString(string: text)
+            let tag = WSTag(attributed)
             addTag(tag)
 
             self.textField.text = ""
@@ -589,9 +591,9 @@ extension WSTagsField {
         set { textField.enablesReturnKeyAutomatically = newValue }
     }
 
-    public var text: String? {
-        get { return textField.text }
-        set { textField.text = newValue }
+    public var text: NSAttributedString? {
+        get { return textField.attributedText }
+        set { textField.attributedText = newValue }
     }
 
     @available(*, deprecated, message: "Use 'inputFieldAccessoryView' instead")

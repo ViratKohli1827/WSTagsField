@@ -12,14 +12,14 @@ open class WSTagView: UIView, UITextInputTraits {
 
     fileprivate let textLabel = UILabel()
 
-    open var displayText: String = "" {
+    open var displayText: NSAttributedString = NSAttributedString() {
         didSet {
             updateLabelText()
             setNeedsDisplay()
         }
     }
 
-    open var displayDelimiter: String = "" {
+    open var displayDelimiter: NSAttributedString = NSAttributedString() {
         didSet {
             updateLabelText()
             setNeedsDisplay()
@@ -191,7 +191,10 @@ open class WSTagView: UIView, UITextInputTraits {
     // MARK: - Attributed Text
     fileprivate func updateLabelText() {
         // Unselected shows "[displayText]," and selected is "[displayText]"
-        textLabel.text = displayText + displayDelimiter
+        let attributedContents = NSMutableAttributedString()
+        attributedContents.append(displayText)
+        attributedContents.append(displayDelimiter)
+        textLabel.attributedText = attributedContents
         // Expand Label
         let intrinsicSize = self.intrinsicContentSize
         frame = CGRect(x: 0, y: 0, width: intrinsicSize.width, height: intrinsicSize.height)

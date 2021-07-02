@@ -10,10 +10,10 @@ import Foundation
 
 public struct WSTag: Hashable {
 
-    public let text: String
+    public let text: NSAttributedString
     public let context: AnyHashable?
 
-    public init(_ text: String, context: AnyHashable? = nil) {
+    public init(_ text: NSAttributedString, context: AnyHashable? = nil) {
         self.text = text
         self.context = context
     }
