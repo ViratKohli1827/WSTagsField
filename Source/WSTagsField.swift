@@ -395,7 +395,7 @@ open class WSTagsField: UIScrollView {
         tagView.displayDelimiter = self.isDelimiterVisible ? self.delimiter : NSAttributedString()
         tagView.cornerRadius = self.cornerRadius
         tagView.borderWidth = 1
-        tagView.borderColor = .lightGray
+        tagView.borderColor = UIColor(red: 0.90, green: 0.93, blue: 0.95, alpha: 1.00)
         tagView.keyboardAppearance = self.keyboardAppearance
         tagView.layoutMargins = self.layoutMargins
 
