@@ -101,7 +101,7 @@ open class WSTagsField: UIScrollView {
 
     @IBInspectable open var borderColor: UIColor? {
         didSet {
-            if let borderColor = borderColor { tagViews.forEach { $0.borderColor = borderColor } }
+            if let borderColor = borderColor { tagViews.forEach { $0.borderColor = UIColor(red: 0.90, green: 0.93, blue: 0.95, alpha: 1.00) } }
         }
     }
 
